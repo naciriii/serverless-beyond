@@ -1,0 +1,13 @@
+ 
+shared: &shared
+  STAGE: ${self:provider.stage}
+  APPLE_WEBHOOK_URL: notifications/apple/{token}
+  GOOGLE_WEBHOOK_URL: notifications/google/{token}
+  GOOGLE: google
+  APPLE: apple
+dev:
+  <<: *shared
+
+stg:
+  <<: *shared
+  

@@ -1,0 +1,34 @@
+{
+        "definitions": {},
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "title": "ExampleRequest request Schema",
+        "required": [
+            "simpleField"
+        ],
+        "properties": {
+          "simpleField": {
+            "type":"string",
+            "title": ""
+          },
+          "complexField": {
+            "type": "object",
+            "title": "t",
+            "required": [
+                "field1","field2"
+              ],
+            "properties": {
+                "field1": {
+                    "type": "string",
+                    "description": ""
+                },
+                "field2": {
+                    "type": "string",
+                    "description": ""
+    
+                }
+                }
+          }
+          
+        }
+      }
