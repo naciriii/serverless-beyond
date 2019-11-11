@@ -32,6 +32,9 @@ switch(args._[0].toLowerCase()) {
     case 'request':
     response = require('./Request')(shell, args._[1], args)
     break;
+    case 'service':
+    response = require('./Service')(shell, args._[1], args)
+    break;
     default:
         throw new TypeError('You need to specify one of those arguments (controller, service, request) !')
 }
