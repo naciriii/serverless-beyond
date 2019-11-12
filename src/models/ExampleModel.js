@@ -1,4 +1,4 @@
-const dynamoose = require('./config')
+const dynamoose = require('dynamoose')
 const uuid = require('uuid/v4')
 const tableName = process.env.STAGE + '_example_table'
 
