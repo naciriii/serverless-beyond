@@ -1,0 +1,660 @@
+Resources:
+  purchasesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_purchases
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  appleNotificationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_apple_notifications
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+        - AttributeName: purchase_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: purchaseIdIndex
+          KeySchema:
+            - AttributeName: purchase_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+  googleNotificationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_google_notifications
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+        - AttributeName: purchase_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: purchaseIdIndex
+          KeySchema:
+            - AttributeName: purchase_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+  publishersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_publishers
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  applicationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_applications
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: token
+          AttributeType: S
+        - AttributeName: app_family_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: tokenIndex
+          KeySchema:
+            - AttributeName: token
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: appFamilyIdIndex
+          KeySchema:
+            - AttributeName: app_family_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  appFamiliesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_app_families
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: publisher_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: publisherIdIndex
+          KeySchema:
+            - AttributeName: publisher_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  ImportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_imports
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  ExportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_exports
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  newExportTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_exports
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+Resources:
+  purchasesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_purchases
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  appleNotificationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_apple_notifications
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+        - AttributeName: purchase_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: purchaseIdIndex
+          KeySchema:
+            - AttributeName: purchase_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+  googleNotificationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_google_notifications
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+        - AttributeName: purchase_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: purchaseIdIndex
+          KeySchema:
+            - AttributeName: purchase_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+  publishersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_publishers
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  applicationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_applications
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: token
+          AttributeType: S
+        - AttributeName: app_family_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: tokenIndex
+          KeySchema:
+            - AttributeName: token
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: appFamilyIdIndex
+          KeySchema:
+            - AttributeName: app_family_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  appFamiliesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_app_families
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: publisher_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: publisherIdIndex
+          KeySchema:
+            - AttributeName: publisher_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  ImportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_imports
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  ExportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_exports
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  newExportTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_exports
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+Resources:
+  purchasesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_purchases
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  appleNotificationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_apple_notifications
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+        - AttributeName: purchase_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: purchaseIdIndex
+          KeySchema:
+            - AttributeName: purchase_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+  googleNotificationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_google_notifications
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+        - AttributeName: purchase_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: purchaseIdIndex
+          KeySchema:
+            - AttributeName: purchase_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+  publishersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_publishers
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  applicationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_applications
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: token
+          AttributeType: S
+        - AttributeName: app_family_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: tokenIndex
+          KeySchema:
+            - AttributeName: token
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: appFamilyIdIndex
+          KeySchema:
+            - AttributeName: app_family_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  appFamiliesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_app_families
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: publisher_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: publisherIdIndex
+          KeySchema:
+            - AttributeName: publisher_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  ImportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_imports
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  ExportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_exports
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  newExportTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_purchases
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: app_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: appIdIndex
+          KeySchema:
+            - AttributeName: app_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
