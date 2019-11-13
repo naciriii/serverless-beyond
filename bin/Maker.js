@@ -48,7 +48,7 @@ msg(colors.Cyan+colors.Bold, response)
 
 msg(colors.Green, args._[1]+' was created Successfully!')
 } catch(err) {
-    //console.log(err)
+    console.log(err)
     let color = colors.Red
     if(err instanceof TypeError) {
         color = colors.Yellow
