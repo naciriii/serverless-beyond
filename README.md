@@ -126,13 +126,29 @@ Resource can be **Table**, **LambdaHandler**
  ngen resource $resourceType $resourceName
  ```
  ###### Generate Table
- As For tables you can use either the initialization with/without index
+ As For tables you can use either the initialization with/without index and stream
  ```sh
- ngen resource table users --index
+ ngen resource table users
  ```
  Which will add this table specification
  ```yml
- usersTable:
+  usersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_users
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+ ```
+ **--index** option will add an example index to the table specificaiton
+ ```yml
+  usersTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: ${self:provider.stage}_users
@@ -157,5 +173,13 @@ Resource can be **Table**, **LambdaHandler**
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
+ ```
+ As for **--stream** option will add Stream specification
+  ```sh
+ ngen resource table users --stream
+ ```
+ ```yml
+    StreamSpecification:
+      StreamViewType: NEW_IMAGE
 
  ```
