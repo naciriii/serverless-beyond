@@ -3,7 +3,7 @@
 LC1 framework created based on serverless framework to simplify development of microservices and automate tasks
 
 ## CLI Commands
-The Cli **ngen** will handle the multiple tasks listed below
+The Cli command **ngen** will handle the multiple tasks listed below
 
 #### Generate Request
 ```sh
