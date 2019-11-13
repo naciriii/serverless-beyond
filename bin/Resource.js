@@ -7,17 +7,32 @@ module.exports = function (shell, name, args) {
     let data 
     switch(name) {
         case 'handler':
-        file  = fs.readFileSync('./src/resources/handlers/appFamilies.yml', 'utf-8')
-        data = yaml.parse(file)
-        shell.exec(`echo '${yaml.stringify(data)}' >> src/resources/handlers/newHandler.yml`)
-        response = data
+                let handler = args._[2]
+                let type  = args.type
+                let authorizer = args.authorizer
+                if(!handler) {
+                    throw new Error('you need to specify a handler name!')
+                }
+                if(!type || type === true) {
+                    type = 'http'
+                }
+            if(fs.existsSync('./src/resources/handlers/'+handler+'.yml')) {
+                throw new Error('Handler already exists! ')
+            }
+
+            let scaffoldData = handlerStub(handler,type, authorizer, shell)
+            data = JSON.parse(scaffoldData)
+            console.log(data)
+        shell.exec(`echo '${yaml.stringify(data)}' > ${process.cwd()}/src/resources/handlers/${handler}.yml`)
+        response = `src/resources/handlers/${handler}.yml Added !`
+
             break;
 
         case 'table':
             let table = args._[2]
             let addStream = args.stream
             if(!table) {
-                throw new Error('you need to specify a table name!')
+                throw new Error('You need to specify a table name!')
             }
              file  = fs.readFileSync('./src/resources/dynamodb.yml', 'utf-8')
              data = yaml.parse(file)
@@ -52,4 +67,59 @@ function tableStub(table, index, addStream) {
      }
 
      return data
+}
+
+function handlerStub(handler, type, authorizer, shell) {
+    let { name, path, basePath } = parsePath(handler)
+    if (path) {
+        shell.mkdir('-p', process.cwd() + '/src/resources/handlers/' + path)
+      }
+      file  = fs.readFileSync('./src/resources/handlers/appFamilies.yml', 'utf-8')
+             let httpEvent = {
+                http: {
+                    path: "",
+                    method: "",
+                    cors: true,
+                    request: {
+                        schema: ""
+                    }
+
+                }
+            }
+            let streamEvent = {
+                stream: {
+                    type: "s3 or dynamodb",
+                    batchSize: "1",
+                    startingPosition: "LATEST",
+                    arn: {
+                        "FN::GetAtt": ["table", "StreamArn"]
+                    }
+                }
+            }
+             let data = {
+                 handleLambdaTrigger: {
+                     handler: "",
+                     events: []
+                 }
+             }
+             if(type === 'http') {
+                 if(authorizer) {
+                    httpEvent.authorizer = {
+                        type: "COGNITO_USER_POOLS",
+                        authorizerId: {
+                            Ref: "ApiGatewayAuthorizer"
+                        }
+                    }
+                    data.handleLambdaTrigger.events.push(httpEvent)
+
+                }
+
+             } else if(type === 'stream') {
+                data.handleLambdaTrigger.events.push(streamEvent)
+
+
+             }
+             
+      return JSON.stringify(data)
+
 }

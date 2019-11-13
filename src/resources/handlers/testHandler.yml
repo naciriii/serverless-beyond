@@ -1,0 +1,12 @@
+handleLambdaTrigger:
+  handler: ""
+  events:
+    - stream:
+        type: s3 or dynamodb
+        batchSize: "1"
+        startingPosition: LATEST
+        arn:
+          FN::GetAtt:
+            - table
+            - StreamArn
+
