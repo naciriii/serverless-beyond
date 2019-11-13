@@ -148,18 +148,6 @@ Resource can be **Table**, **LambdaHandler**
  ```
  **--index** option will add an example index to the table specificaiton
  ```yml
-  usersTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: ${self:provider.stage}_users
-      AttributeDefinitions:
-        - AttributeName: id
-          AttributeType: S
-        - AttributeName: index_key
-          AttributeType: S
-      KeySchema:
-        - AttributeName: id
-          KeyType: HASH
       GlobalSecondaryIndexes:
         - IndexName: indexName
           KeySchema:
@@ -170,9 +158,6 @@ Resource can be **Table**, **LambdaHandler**
           ProvisionedThroughput:
             ReadCapacityUnits: 1
             WriteCapacityUnits: 1
-      ProvisionedThroughput:
-        ReadCapacityUnits: 1
-        WriteCapacityUnits: 1
  ```
  As for **--stream** option will add Stream specification
   ```sh
