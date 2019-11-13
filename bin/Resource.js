@@ -20,9 +20,11 @@ module.exports = function (shell, name, args) {
             }
              file  = fs.readFileSync('./src/resources/dynamodb.yml', 'utf-8')
              data = yaml.parse(file)
+             data = data === null ? {Resources: {}}: data
+             data.Resources = data.Resources === null ? {}: data.Resources
              data.Resources[table+'Table'] = JSON.parse(tableStub(table, args.index))
              shell.exec(`echo '${yaml.stringify(data)}' > src/resources/dynamodb.yml`)
-             response = table                
+             response = table+'Table Added !'                
             break;
         default:
             throw new Error ('undefined Resource type !') 
