@@ -168,3 +168,56 @@ Resource can be **Table**, **LambdaHandler**
       StreamViewType: NEW_IMAGE
 
  ```
+  ###### Generate Lambda Handler
+  For lambda handlers you can initialize with different types of events (default Http)
+ ```sh
+ ngen resource handler users
+ ```
+ Which will create a new lambda handler as below
+ ```yml
+handleLambdaTrigger:
+  handler: ""
+  events:
+    - http:
+        path: ""
+        method: ""
+        cors: true
+        request:
+          schema: ""
+
+
+ ```
+  ```
+ As for **--type stream** option will add Stream event instead of http
+  ```sh
+ ngen resource handler users --type stream
+ ```
+ ```yml
+handleLambdaTrigger:
+  handler: ""
+  events:
+    - stream:
+        type: dynamodb
+        batchSize: 1
+        startingPosition: LATEST
+        arn:
+          FN::GetAtt:
+            - tableResourceName
+            - StreamArn
+
+ ```
+  And possibly  **--type ss3** option will add S3 event as trigger
+  ```sh
+ ngen resource handler users --type s3
+ ```
+ ```yml
+handleLambdaTrigger:
+  handler: ""
+  events:
+    - s3:
+        bucket: ""
+        event: s3:ObjectCreated:*
+        rules:
+          - prefix: ""
+
+ ```
