@@ -173,7 +173,7 @@ Resource can be **Table**, **LambdaHandler**
  ```sh
  ngen resource handler users
  ```
- Which will create a new lambda handler as below
+ Which will create a new lambda handler under **src/resources/handlers/users.yml** as below
  ```yml
 handleLambdaTrigger:
   handler: ""
