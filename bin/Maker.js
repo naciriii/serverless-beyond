@@ -44,9 +44,9 @@ switch(args._[0].toLowerCase()) {
     default:
         throw new TypeError('You need to specify one of those arguments (controller, service, request) !')
 }
-msg(colors.Cyan+colors.Bold, response)
 
-msg(colors.Green, args._[1]+' was created Successfully!')
+msg(colors.Green, args._[0]+' was created Successfully!')
+msg(colors.Cyan+colors.Bold, response)
 } catch(err) {
     console.log(err)
     let color = colors.Red

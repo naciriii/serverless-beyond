@@ -22,7 +22,6 @@ module.exports = function (shell, name, args) {
 
             let scaffoldData = handlerStub(handler,type, authorizer, shell)
             data = JSON.parse(scaffoldData)
-            console.log(data)
         shell.exec(`echo '${yaml.stringify(data)}' > ${process.cwd()}/src/resources/handlers/${handler}.yml`)
         response = `src/resources/handlers/${handler}.yml Added !`
 
@@ -88,12 +87,21 @@ function handlerStub(handler, type, authorizer, shell) {
             }
             let streamEvent = {
                 stream: {
-                    type: "s3 or dynamodb",
-                    batchSize: "1",
+                    type: "dynamodb",
+                    batchSize: 1,
                     startingPosition: "LATEST",
                     arn: {
-                        "FN::GetAtt": ["table", "StreamArn"]
+                        "FN::GetAtt": ["tableResourceName", "StreamArn"]
                     }
+                }
+            }
+            let s3Event = {
+                s3: {
+                    bucket: "",
+                    event: "s3:ObjectCreated:*",
+                    rules: [
+                        {prefix: ""}
+                    ]
                 }
             }
              let data = {
@@ -110,14 +118,15 @@ function handlerStub(handler, type, authorizer, shell) {
                             Ref: "ApiGatewayAuthorizer"
                         }
                     }
-                    data.handleLambdaTrigger.events.push(httpEvent)
-
                 }
+                    data.handleLambdaTrigger.events.push(httpEvent)
 
              } else if(type === 'stream') {
                 data.handleLambdaTrigger.events.push(streamEvent)
 
 
+             } else if(type ==='s3') {
+                data.handleLambdaTrigger.events.push(s3Event)
              }
              
       return JSON.stringify(data)

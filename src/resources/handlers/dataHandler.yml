@@ -1,0 +1,10 @@
+handleLambdaTrigger:
+  handler: ""
+  events:
+    - http:
+        path: ""
+        method: ""
+        cors: true
+        request:
+          schema: ""
+
