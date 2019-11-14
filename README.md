@@ -206,7 +206,7 @@ handleLambdaTrigger:
             - StreamArn
 
  ```
-  And possibly  **--type ss3** option will add S3 event as trigger
+  And possibly  **--type s3** option will add S3 event as trigger
   ```sh
  ngen resource handler users --type s3
  ```
