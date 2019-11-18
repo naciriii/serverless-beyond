@@ -76,4 +76,19 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
+  NacerTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.stage}_Nacer
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+    StreamSpecification:
+      StreamViewType: NEW_IMAGE
 

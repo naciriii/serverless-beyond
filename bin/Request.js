@@ -1,7 +1,7 @@
 const { parsePath } = require('./utils')
 module.exports = function (shell, name, args) {
   if (typeof name === 'undefined') {
-    throw new TypeError('You need to specify a controller name !')
+    throw new TypeError('You need to specify a request name !')
   }
   let content = requestStub(name, shell)
 
@@ -15,7 +15,7 @@ function requestStub (requestName, shell) {
     shell.mkdir('-p', process.cwd() + '/src/requests/' + path)
   }
 
-  return new String(`{
+  return (`{
         "definitions": {},
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",

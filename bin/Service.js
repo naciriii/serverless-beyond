@@ -9,21 +9,13 @@ module.exports = function (shell, name, args) {
 }
 
 function serviceStub (serviceName, shell) {
-  let { name, path, basePath } = parsePath(serviceName)
+  let { name, path } = parsePath(serviceName)
 
   if (path) {
     shell.mkdir('-p', process.cwd() + '/src/services/' + path)
-    baseservicePath = basePath + 'service'
-  } else {
-    baseservicePath = './service'
   }
-
   return `module.exports = class ${name} {
 
-        constructor() {
-            super()
-
-        }
+       
     }`
 }
-

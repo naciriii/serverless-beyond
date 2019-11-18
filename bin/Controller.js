@@ -9,6 +9,8 @@ module.exports = function (shell, name, args) {
     let handlerName = args.handler !== true ? args.handler : name.split('/').pop().split('Controller')[0] + 'Handler'
     let content = handlerStub(handlerName, name, shell)
     shell.exec('echo "' + content + '" >' + process.cwd() + '/src/handlers/' + handlerName + '.js ')
+
+    shell.exec('ngen resource handler ' + handlerName.split('Handler')[0] + ' --link ' + handlerName)
   }
   return 'src/controllers/' + name
 }
@@ -28,14 +30,11 @@ function controllerStub (controllerName, shell) {
 
     module.exports = class ${name} extends controller {
 
-        constructor() {
-            super()
-
-        }
+       
     }`
 }
 function handlerStub (handlerName, controller, shell) {
-  let { name, basePath, path } = parsePath(handlerName)
+  let { basePath, path } = parsePath(handlerName)
   let { name: controllerName } = parsePath(controller)
   let controllerPath = '../' + basePath + 'controllers/' + controller
   if (path) {

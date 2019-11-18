@@ -5,31 +5,24 @@ module.exports = function (shell, name, args) {
   }
   let content = modelStub(name, shell, args.table)
   shell.exec('echo "' + content + '" >' + process.cwd() + '/src/models/' + name + '.js ')
-  
+
   return 'src/models/' + name
 }
 
 function modelStub (modelName, shell, table) {
-  let { name, path, basePath } = parsePath(modelName)
- 
-
-
+  let { path } = parsePath(modelName)
   if (path) {
     shell.mkdir('-p', process.cwd() + '/src/models/' + path)
-    basemodelPath = basePath + 'model'
-  } else {
-    basemodelPath = './model'
-    basePath.substr()
   }
-  if(table) {
-      if(table === true) {
-        table = modelName.charAt(0).toLowerCase()+modelName.slice(1)
-        table = table.charAt(table.length) === 's' ? table: table + 's'
-
-      } } else {
-          table = 'example_table'
-      }
-      return `const dynamoose = require('dynamoose')
+  if (table) {
+    if (table === true) {
+      table = modelName.charAt(0).toLowerCase() + modelName.slice(1)
+      table = table.charAt(table.length) === 's' ? table : table + 's'
+    }
+  } else {
+    table = 'example_table'
+  }
+  return `const dynamoose = require('dynamoose')
     const uuid = require('uuid/v4')
     const tableName = process.env.STAGE + '_${table}'
     
@@ -53,9 +46,4 @@ function modelStub (modelName, shell, table) {
     
     module.exports = ${modelName}
     `
-
-  
-
-
 }
-
