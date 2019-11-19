@@ -42,13 +42,13 @@ try {
       response = require('./Resource')(shell, args._[1], args)
       break
     default:
-      throw new TypeError('You need to specify one of those arguments (controller, service, request) !')
+      throw new TypeError('You need to specify one of those arguments (controller, service, request, resource) !')
   }
 
   msg(colors.Green, args._[0] + ' was created Successfully!')
   msg(colors.Cyan + colors.Bold, response)
 } catch (err) {
-  console.log(err)
+  // console.log(err)
   let color = colors.Red
   if (err instanceof TypeError) {
     color = colors.Yellow

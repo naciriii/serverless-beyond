@@ -27,9 +27,18 @@ module.exports = function (shell, args) {
 
 function handlerStub (handler, type, authorizer, link, controller, shell) {
   let { path } = parsePath(handler)
+  let handlerName
   if (path) {
     shell.mkdir('-p', process.cwd() + '/src/resources/handlers/' + path)
   }
+  if (link && link.length) {
+    handlerName = link
+  } else if (controller && controller !== true) {
+    let { data, name } = controllerHandlerStub(controller)
+    shell.exec(`echo "${data}" > ${process.cwd()}/src/handlers/${name.split('Controller')[0] + 'Handler'}.js`)
+    handlerName = name.split('Controller')[0] + 'Handler'
+  }
+
   let httpEvent = {
     http: {
       path: '',
@@ -59,9 +68,10 @@ function handlerStub (handler, type, authorizer, link, controller, shell) {
       ]
     }
   }
+
   let data = {
     handleLambdaTrigger: {
-      handler: 'src/handlers/' + (link.length ? link : '') + '.index',
+      handler: 'src/handlers/' + handlerName + '.index',
       events: []
     }
   }
@@ -84,15 +94,11 @@ function handlerStub (handler, type, authorizer, link, controller, shell) {
   return JSON.stringify(data)
 }
 
-/* function linkStub (handlerName, controller, shell) {
-  let { name, basePath, path } = parsePath(handlerName)
+function controllerHandlerStub (controller) {
   let { name: controllerName } = parsePath(controller)
-  let controllerPath = '../' + basePath + 'controllers/' + controller
-  if (path) {
-    shell.mkdir('-p', process.cwd() + '/src/handlers/' + path)
-  }
+  let controllerPath = '../controllers/' + controller
+  return { name: controllerName,
+    data: `const ${controllerName} = require('${controllerPath}')
 
-  return `const ${controllerName} = require('${controllerPath}')
-
-  module.exports = new ${controllerName}()`
-} */
+  module.exports = new ${controllerName}()` }
+}

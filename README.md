@@ -51,25 +51,35 @@ The Cli command **ngen** will handle the multiple tasks listed below
  ngen controller $controllerName
  ngen controller $path_under_controllers/$controllerName
  ```
- Which result like below
+ Which generate an empty controller like below
  ```javascript
  const controller = require('./Controller')
 
     module.exports = class UserController extends controller {
 
-        constructor() {
-            super()
-
-        }
     }
 ```
- Generate controller and initialize lambda handlers
+ Generate controller and initialize lambda handlers and link both
 
 ```sh
  ngen controller $controllerName --handler
  ngen controller $controllerName --handler $customHandlerName
  ```
- Like below
+ which create the lambda yml handler under **src/resources/handlers/User.yml** as below 
+
+ ```yml
+ handleLambdaTrigger:
+  handler: src/handlers/UserHandler.index
+  events:
+    - http:
+        path: ""
+        method: ""
+        cors: true
+        request:
+          schema: ""
+ ```
+And initialize the link between the handler and the controller under **src/handlers/UserHandler.js**
+
  ```javascript
  const TestController = require('../controllers/UserController')
 
@@ -169,7 +179,7 @@ Resource can be **Table**, **LambdaHandler**
 
  ```
   ###### Generate Lambda Handler
-  For lambda handlers you can initialize with different types of events (default Http)
+  For lambda handlers you can initialize with different types of events (stream, s3, Http (default))
  ```sh
  ngen resource handler users
  ```
@@ -184,10 +194,23 @@ handleLambdaTrigger:
         cors: true
         request:
           schema: ""
-
-
  ```
-  ```
+
+You can add the authorizer option for http based event if you want a cognito authorizer scaffolding as below
+```yml
+  handleLambdaTrigger:
+    handler: ""
+    events:
+      - http:
+          path: ""
+          method: ""
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+ ```
+
  As for **--type stream** option will add Stream event instead of http
   ```sh
  ngen resource handler users --type stream
@@ -221,3 +244,8 @@ handleLambdaTrigger:
           - prefix: ""
 
  ```
+ Optionally you can add the controller option if you want to link the lambda handler to a controller
+ ```sh
+ ngen resource handler users --controller UserController
+ ```
+ Which will create the link between both under **src/handlers/UserHandler.js**
