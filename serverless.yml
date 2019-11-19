@@ -81,13 +81,8 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  - ${file(./src/resources/handlers/publishers.yml)}
   - ${file(./src/resources/handlers/appFamilies.yml)}  
-  - ${file(./src/resources/handlers/applications.yml)} 
-  - ${file(./src/resources/handlers/purchases.yml)} 
-  - ${file(./src/resources/handlers/notifications.yml)}   
-  - ${file(./src/resources/handlers/imports.yml)}                           
-  - ${file(./src/resources/handlers/exports.yml)}           
+        
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -143,8 +138,6 @@ functions:
 resources: # CloudFormation template syntax
 # DynamoDB tables 
   - ${file(./src/resources/dynamodb.yml)}
-# Cognito user/admin pool  
-  - ${file(./src/resources/cognito-pools.yml)} 
 #Authorizer    
   - ${file(./src/resources/auth.yml)}            
 plugins:
