@@ -22,13 +22,9 @@ service: slsApi # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs10.x
-  profile: devProfile
+  profile: dev
   stage: ${opt:stage, 'dev'}
   iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - "s3:*"
-      Resource: { "Fn::Join": ["", ["arn:aws:s3:::${self:provider.stage}-mbaasy-data-imports", "/*"]] }
     - Effect: Allow
       Action:
         - lambda:InvokeFunction
@@ -36,7 +32,6 @@ provider:
       Resource: "*"
     - Effect: Allow
       Action:
-        - dynamodb:DescribeTable
         - dynamodb:Query
         - dynamodb:Scan
         - dynamodb:GetItem
@@ -44,10 +39,6 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
-    - Effect: Allow
-      Action:
-        - cognito-idp:*
-      Resource: "arn:aws:cognito-idp:us-east-1:*:*"       
   # you can overwrite defaults here
   #  stage: dev
   #  region: us-east-1
@@ -138,7 +129,5 @@ functions:
 resources: # CloudFormation template syntax
 # DynamoDB tables 
   - ${file(./src/resources/dynamodb.yml)}
-#Authorizer    
-  - ${file(./src/resources/auth.yml)}            
 plugins:
   - serverless-offline

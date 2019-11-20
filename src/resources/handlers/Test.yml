@@ -1,0 +1,10 @@
+handleLambdaTrigger:
+  handler: src/handlers/ControllerHandler.method
+  events:
+    - http:
+        path: ""
+        method: ""
+        cors: true
+        request:
+          schema: ""
+

@@ -27,7 +27,7 @@ module.exports = function (shell, args) {
 
 function handlerStub (handler, type, authorizer, link, controller, shell) {
   let { path } = parsePath(handler)
-  let handlerName
+  let handlerName = 'ControllerHandler.method'
   if (path) {
     shell.mkdir('-p', process.cwd() + '/src/resources/handlers/' + path)
   }
@@ -71,7 +71,7 @@ function handlerStub (handler, type, authorizer, link, controller, shell) {
 
   let data = {
     handleLambdaTrigger: {
-      handler: 'src/handlers/' + handlerName + '.index',
+      handler: 'src/handlers/' + handlerName ,
       events: []
     }
   }
