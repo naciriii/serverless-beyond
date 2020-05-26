@@ -1,6 +1,6 @@
-# LC1 Framework
+# Serverless Beyond Framework
 
-LC1 framework created based on serverless framework to simplify development of microservices and automate tasks
+Serverless Beyond framework is built based on serverless framework in order to simplify development of microservices and automate usual tasks and help you to focus on writing code within a clean and optimized architecture.
 
 ## CLI Commands
 The Cli command **ngen** will handle the multiple tasks listed below

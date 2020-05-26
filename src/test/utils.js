@@ -1,4 +1,4 @@
-const dynamoose = require('../models/config')
+const dynamoose = require('dynamoose')
 module.exports = {
 
   mockEvent (type, data) {
@@ -8,12 +8,12 @@ module.exports = {
         response.context = {
           awsRequestId: 'offline_awsRequestId_ck23e98gq00072gd38e9ngsq9',
           clientContext: {},
-          functionName: 'slsApi-dev-handlePostAppleReceiptVerification',
-          functionVersion: 'offline_functionVersion_for_slsApi-dev-handlePostAppleReceiptVerification',
+          functionName: 'slsBeyond-dev-handlePostSomething',
+          functionVersion: 'offline_functionVersion_for_slsBeyond-dev-handlePostSomething',
           identity: {},
-          invokedFunctionArn: 'offline_invokedFunctionArn_for_slsApi-dev-handlePostAppleReceiptVerification',
-          logGroupName: 'offline_logGroupName_for_slsApi-dev-handlePostAppleReceiptVerification',
-          logStreamName: 'offline_logStreamName_for_slsApi-dev-handlePostAppleReceiptVerification'
+          invokedFunctionArn: 'offline_invokedFunctionArn_for_-dev-handlePostSomething',
+          logGroupName: 'offline_logGroupName_for_slsBeyond-dev-handlePostsomething',
+          logStreamName: 'offline_logStreamName_for_slsBeyond-dev-handlePostsomething'
         }
         response.event = {
           body: JSON.stringify(data),
@@ -22,10 +22,7 @@ module.exports = {
             accountId: 'offlineContext_accountId',
             apiId: 'offlineContext_apiId',
             authorizer: {
-              app_id: 'a310f1eb-e60d-4133-b078-e08b953a78cf',
-              appId: 'com.8fit.app',
-              credentials: '{"password":"0a504edf814345efa8069f1c27017c6f"}',
-              principalId: 'a310f1eb-e60d-4133-b078-e08b953a78cf'
+              principalId: 'SomeAuthIdentifier'
             }
           }
         }
@@ -54,20 +51,14 @@ module.exports = {
                   'request_context': {
                     'S': data.request_context
                   },
-                  'payload': {
-                    'S': data.payload
-                  },
-                  'purchase_id': {
-                    'S': data.purchase_id
+                  'some_string': {
+                    'S': data.some_string
                   },
                   'id': {
                     'S': data.id
                   },
-                  'type': {
-                    'S': data.type
-                  },
-                  'app_id': {
-                    'S': data.app_id
+                  'some_number': {
+                    'N': data.some_number
                   },
                   'updatedAt': {
                     'N': data.updatedAt
@@ -77,13 +68,41 @@ module.exports = {
                 'SizeBytes': 13528,
                 'StreamViewType': 'NEW_IMAGE'
               },
-              'eventSourceARN': 'arn:aws:dynamodb:us-east-1:104892087807:table/dev_apple_notifications/stream/2019-09-24T15:04:28.282'
+              'eventSourceARN': 'arn:aws:dynamodb:us-east-1:111111111111:table/dev_table_name/stream/2019-09-24T15:04:28.282'
             }
           ]
         }
-
         break
       case 's3':
+        response.event = {
+          'Records': [
+            { 'eventVersion': '2.0',
+              'eventSource': 'aws:s3',
+              'awsRegion': 'us-east-1',
+              'eventTime': '2016-09-25T05:15:44.261Z',
+              'eventName': 'ObjectCreated:Put',
+              'userIdentity':
+              { 'principalId': 'AWS:AROAW5CA2KAGZPAWYRL7K:cli' },
+              'requestParameters': { 'sourceIPAddress': '222.24.107.21' },
+              'responseElements': { 'x-amz-request-id': '00093EEAA5C7G7F2', 'x-amz-id-2': '9tTklyI/OEj4mco12PgsNksgxAV3KePn7WlNSq2rs+LXD3xFG0tlzgvtH8hClZzI963KYJgVnXw=' },
+              's3': { 's3SchemaVersion': '1.0',
+                'configurationId': '151dfa64-d57a-4383-85ac-620bce65f269',
+                'bucket': { 'name': 'service-1474780369352-1',
+                  'ownerIdentity': {
+                    'principalId': 'A3QLJ3P3P5QY05'
+                  },
+                  'arn': 'arn:aws:s3:::service-1474780369352-1'
+                },
+                'object': {
+                  'key': data.id,
+                  'size': 11,
+                  'eTag': '5eb63bbbe01eetd093cb22bb8f5acdc3',
+                  'sequencer': '0057E75D80IA35C3E0'
+                }
+              }
+            }
+          ]
+        }
 
         break
 

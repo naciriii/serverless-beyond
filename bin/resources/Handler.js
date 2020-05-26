@@ -71,7 +71,7 @@ function handlerStub (handler, type, authorizer, link, controller, shell) {
 
   let data = {
     handleLambdaTrigger: {
-      handler: 'src/handlers/' + handlerName ,
+      handler: 'src/handlers/' + handlerName,
       events: []
     }
   }

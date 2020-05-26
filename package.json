@@ -1,17 +1,17 @@
 {
-  "name": "lc-1-framework",
+  "name": "serverless-beyond",
   "version": "1.0.0",
-  "description": "Serverless based framework",
+  "description": "Framework built over Serverless Framework, That makes Serverless Development and Creating Micro services even easier With an easy CLI and optimized architecture",
   "scripts": {
     "test": "export STAGE=test && mocha src/test/**/*.test.js --recursive --slow 0 --exit",
     "start": "serverless offline start",
     "dev": "serverless offline start -l --port 4000",
-    "standard-check": "standard ",
-    "standardize": "standard --fix"
+    "lint-check": "standard",
+    "lint": "standard --fix"
   },
   "standard": {
     "ignore": [
-      "test/"
+      "**/test/unit", "**/test/integration"
     ]
   },
   "bin": {
