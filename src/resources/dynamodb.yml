@@ -2,7 +2,7 @@ Resources:
   productsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${self:provider.stage}_products
+      TableName: ${self:provider.stage}_tests
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
